@@ -124,6 +124,3 @@ Rscript demo.R
 - **R**: Tidyverse style guide
 - **Documentation**: Docstrings for all functions
 
-## 📝 License
-
-MIT License - see LICENSE file for details 

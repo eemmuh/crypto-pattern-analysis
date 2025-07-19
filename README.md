@@ -162,18 +162,6 @@ make clean     # Clean cache and temporary files
 - [R Documentation](README_R.md) - R-specific documentation
 - [Jupyter Notebook](notebooks/crypto_analysis_demo.ipynb) - Interactive analysis
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Add tests for new functionality
-4. Run `make lint` and `make test`
-5. Submit a pull request
-
-## 📄 License
-
-MIT License - see LICENSE file for details
-
 ## 🔗 Dependencies
 
 ### Python
@@ -188,3 +176,4 @@ MIT License - see LICENSE file for details
 - **ML**: depmixS4, tsclust, cluster
 - **Visualization**: ggplot2, plotly
 - **Analysis**: PerformanceAnalytics, rugarch 
+

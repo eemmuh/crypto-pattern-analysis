@@ -318,14 +318,6 @@ All functions include detailed Roxygen2 documentation with:
 - Usage examples
 - References to relevant literature
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Add tests for new functionality
-4. Update documentation
-5. Submit a pull request
-
 ### Development Setup
 ```r
 # Install development dependencies
@@ -336,10 +328,6 @@ devtools::document()
 devtools::check()
 devtools::test()
 ```
-
-## 📝 License
-
-MIT License - see LICENSE file for details
 
 ## 🔗 Dependencies
 
