@@ -82,4 +82,14 @@ coverage.xml
 # mypy
 .mypy_cache/
 .dmypy.json
-dmypy.json 
+dmypy.json
+
+# R specific
+.Rhistory
+.RData
+.Ruserdata
+
+# Project specific
+test_*.py
+fix_*.py
+temp_*.py 
