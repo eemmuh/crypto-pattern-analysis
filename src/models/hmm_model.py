@@ -40,6 +40,7 @@ class MarketRegimeDetector:
         self.regime_probabilities = None
         self.transition_matrix = None
         self.regime_characteristics = {}
+        self.feature_indices = None  # Store indices of features used for detection
         
     def prepare_features(self, 
                         feature_groups: Optional[List[str]] = None,
@@ -86,8 +87,14 @@ class MarketRegimeDetector:
         
         feature_data = self.data[available_features].copy()
         
+        # Store the indices of the data used for feature preparation
+        self.feature_indices = feature_data.index
+        
         # Remove rows with NaN values
         feature_data = feature_data.dropna()
+        
+        # Update feature indices to match the cleaned data
+        self.feature_indices = feature_data.index
         
         if normalize:
             self.scaled_data = self.scaler.fit_transform(feature_data)
@@ -399,6 +406,21 @@ class MarketRegimeDetector:
         
         return pd.DataFrame(summary_data)
     
+    def get_aligned_data(self, price_data: pd.DataFrame) -> pd.DataFrame:
+        """
+        Get price data aligned with regime detection results.
+        
+        Args:
+            price_data: Original price data
+            
+        Returns:
+            Aligned price data
+        """
+        if self.feature_indices is not None:
+            return price_data.loc[self.feature_indices]
+        else:
+            return price_data.iloc[:len(self.regime_labels)] if self.regime_labels is not None else price_data
+    
     def visualize_regimes(self, 
                          price_data: pd.DataFrame,
                          method: str = 'pca') -> go.Figure:
@@ -423,13 +445,16 @@ class MarketRegimeDetector:
             vertical_spacing=0.1
         )
         
+        # Use the helper method to get aligned data
+        aligned_price_data = self.get_aligned_data(price_data)
+        
         # Plot 1: Price with regime colors
         colors = ['red', 'blue', 'green', 'orange', 'purple', 'brown']
         
         for regime in range(self.n_regimes):
             regime_mask = self.regime_labels == regime
-            regime_dates = price_data.index[regime_mask]
-            regime_prices = price_data['CLOSE'].iloc[regime_mask]
+            regime_dates = aligned_price_data.index[regime_mask]
+            regime_prices = aligned_price_data['CLOSE'].iloc[regime_mask]
             
             fig.add_trace(
                 go.Scatter(
@@ -448,7 +473,7 @@ class MarketRegimeDetector:
             for regime in range(self.n_regimes):
                 fig.add_trace(
                     go.Scatter(
-                        x=price_data.index,
+                        x=aligned_price_data.index,
                         y=self.regime_probabilities[:, regime],
                         mode='lines',
                         name=f'Regime {regime} Prob',
