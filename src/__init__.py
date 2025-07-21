@@ -1,4 +1,4 @@
-# Crypto Trading Analysis Package
+# Crypto Trading Analysis Package 
 from .data import CryptoDataCollector
 from .features import TechnicalIndicators
 from .patterns import CandlestickPatternDetector

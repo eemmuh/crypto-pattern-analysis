@@ -68,13 +68,13 @@ class CryptoDataCollector:
         Returns:
             DataFrame with OHLCV data
         """
-        # Get the full symbol for yfinance
-        full_symbol = self.crypto_symbols.get(symbol.upper(), f"{symbol.upper()}-USD")
-        
-        # Check cache first
-        cache_file = self._get_cache_filename(full_symbol, period, interval, start_date, end_date)
-        if os.path.exists(cache_file):
-            logger.info(f"Loading cached data for {symbol}")
+            # Get the full symbol for yfinance
+            full_symbol = self.crypto_symbols.get(symbol.upper(), f"{symbol.upper()}-USD")
+            
+            # Check cache first
+            cache_file = self._get_cache_filename(full_symbol, period, interval, start_date, end_date)
+            if os.path.exists(cache_file):
+                logger.info(f"Loading cached data for {symbol}")
             try:
                 return pd.read_csv(cache_file, index_col=0, parse_dates=True)
             except Exception as e:
@@ -88,34 +88,34 @@ class CryptoDataCollector:
                 # Add delay between retries
                 if attempt > 0:
                     time.sleep(2 ** attempt)  # Exponential backoff
-                
-                # Fetch data from yfinance
-                ticker = yf.Ticker(full_symbol)
-                
-                if start_date and end_date:
-                    data = ticker.history(start=start_date, end=end_date, interval=interval)
-                else:
-                    data = ticker.history(period=period, interval=interval)
-                
-                if data.empty:
-                    raise ValueError(f"No data found for {symbol}")
-                
-                # Clean and standardize column names
-                data.columns = [col.upper() for col in data.columns]
-                
-                # Add additional features
-                data = self._add_basic_features(data)
-                
-                # Cache the data
+            
+            # Fetch data from yfinance
+            ticker = yf.Ticker(full_symbol)
+            
+            if start_date and end_date:
+                data = ticker.history(start=start_date, end=end_date, interval=interval)
+            else:
+                data = ticker.history(period=period, interval=interval)
+            
+            if data.empty:
+                raise ValueError(f"No data found for {symbol}")
+            
+            # Clean and standardize column names
+            data.columns = [col.upper() for col in data.columns]
+            
+            # Add additional features
+            data = self._add_basic_features(data)
+            
+            # Cache the data
                 try:
-                    data.to_csv(cache_file)
-                    logger.info(f"Downloaded and cached data for {symbol}: {len(data)} records")
+            data.to_csv(cache_file)
+            logger.info(f"Downloaded and cached data for {symbol}: {len(data)} records")
                 except Exception as e:
                     logger.warning(f"Failed to cache data: {e}")
-                
-                return data
-                
-            except Exception as e:
+            
+            return data
+            
+        except Exception as e:
                 logger.warning(f"Attempt {attempt + 1} failed for {symbol}: {str(e)}")
                 if attempt == max_retries - 1:
                     # Last attempt failed, try to provide sample data
