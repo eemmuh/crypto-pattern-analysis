@@ -1,179 +1,74 @@
-# Crypto Trading Analysis: Pattern Recognition & Market Behavior Clustering
+# Crypto Market Analysis: Clustering, Pattern Recognition, and Regime Detection
 
-A comprehensive Python and R project for identifying candlestick patterns, trend reversals, and momentum shifts in cryptocurrency markets using advanced statistical and machine learning techniques.
+A cross-language (Python & R) toolkit for unsupervised clustering, pattern recognition, and market regime detection in cryptocurrency price data.
 
-## 🎯 Features
+## Features
 
-### Pattern Recognition
-- **Candlestick Patterns**: Doji, Hammer, Shooting Star, Engulfing patterns
-- **Trend Reversals**: Support/Resistance breaks, Double tops/bottoms
-- **Momentum Shifts**: RSI divergences, MACD crossovers, Volume spikes
+- **Dual Implementation**: All core analysis available in both Python and R
+- **Pattern Recognition**: 27+ candlestick patterns, trend reversals, momentum shifts
+- **Market Regime Detection**: Hidden Markov Models (HMM) and Gaussian Mixture Models (GMM) for identifying bull, bear, and sideways markets
+- **Unsupervised Clustering**: K-means, DBSCAN, and time series clustering for market behavior
+- **Robust Data Handling**: Automatic retry and fallback to sample data if API fails
+- **Interactive Visualization**: Plotly, ggplot2, and more
+- **Extensible & Modular**: Easy to add new features or models
 
-### Machine Learning Techniques
-- **Hidden Markov Models (HMM)**: Market regime detection using Gaussian Mixture Models
-- **Clustering**: K-means, DBSCAN, and time series clustering
-- **Anomaly Detection**: Statistical and ML-based anomaly detection
-- **Spectral Analysis**: Frequency domain analysis for cyclical patterns
-- **Dimensionality Reduction**: PCA, t-SNE, UMAP for visualization
+## Key Technologies
 
-### Market Behavior Analysis
-- **Unsupervised Clustering**: Group similar market behaviors (bullish, bearish, sideways)
-- **Feature Engineering**: Technical indicators, price action features, volume analysis
-- **Real-time Analysis**: Live data processing and pattern detection
+- **Python**: `yfinance` (crypto data), `scikit-learn`, `tslearn`, `plotly`
+- **R**: `depmixS4` (HMMs), `TSclust` (time series clustering), `quantmod`, `ggplot2`
+- **Data Storage**: CSV cache (no SQL database required)
 
-## 🚀 Quick Start
+### Technology Highlights
+- **depmixS4**: R package for Hidden Markov Models, used for market regime detection.
+- **TSclust**: R package for time series clustering, grouping similar market behaviors.
+- **yfinance**: Python package for downloading cryptocurrency and financial data from Yahoo Finance.
 
-### Option 1: Using Makefile (Recommended)
-```bash
-# Show all available commands
-make help
-
-# Full setup and quick start
-make quick-start
-
-# Or step by step:
-make install      # Install Python dependencies
-make setup-r      # Install R dependencies
-make run-demo     # Run Python demo
-make run-notebook # Start Jupyter notebook
-```
-
-### Option 2: Manual Setup
-```bash
-# Install Python dependencies
-pip install -r requirements.txt
-
-# Install R dependencies
-Rscript install_dependencies.R
-
-# Run Python demo
-python demo.py
-
-# Start Jupyter notebook
-jupyter notebook notebooks/crypto_analysis_demo.ipynb
-
-# Run R demo
-Rscript demo.R
-```
-
-## 📁 Project Structure
+## Project Structure
 
 ```
 crypto-project/
 ├── src/                    # Python source code
-│   ├── data/              # Data collection and preprocessing
-│   ├── features/          # Feature engineering
-│   ├── models/            # ML models and algorithms
-│   ├── patterns/          # Pattern recognition
-│   ├── visualization/     # Plotting and charts
-│   └── utils/             # Utility functions
-├── R/                     # R source files
-├── notebooks/             # Jupyter notebooks for analysis
-├── data/                  # Data storage and caching
-├── tests/                 # Unit tests
-├── config/                # Configuration files
-├── demo.py                # Python demo script
-├── demo.R                 # R demo script
-├── requirements.txt       # Python dependencies
-├── Makefile              # Development tasks
-└── PROJECT_STRUCTURE.md  # Detailed project structure
+│   ├── data/               # Data collection and preprocessing
+│   ├── features/           # Feature engineering
+│   ├── models/             # ML models and algorithms
+│   ├── patterns/           # Pattern recognition
+│   ├── visualization/      # Plotting and charts
+│   └── utils/              # Utility functions
+├── R/                      # R source files
+├── notebooks/              # Jupyter notebooks for analysis
+├── data/                   # Data storage and caching
+│   └── cache/
+├── config/                 # Configuration files
+├── demo.py                 # Python demo script
+├── demo.R                  # R demo script
+├── requirements.txt        # Python dependencies
+├── install_dependencies.R  # R dependencies
+├── README.md               # Main documentation
+├── README_R.md             # R-specific documentation
+├── DESCRIPTION             # R package description (optional)
+├── Makefile                # Automation (optional)
+└── .gitignore
 ```
 
-## 📊 Key Components
+## Documentation
 
-### 1. Data Preprocessing (`src/data/`)
-- OHLCV data collection from Yahoo Finance
-- Data cleaning and normalization
-- Time series resampling and alignment
-- Robust error handling with fallback sample data
+- **README.md**: Main project documentation (this file)
+- **README_R.md**: R-specific usage and setup
+- **notebooks/crypto_analysis_demo.ipynb**: Interactive Python analysis
+- **DESCRIPTION**: R package metadata (optional)
 
-### 2. Feature Engineering (`src/features/`)
-- 35+ technical indicators (RSI, MACD, Bollinger Bands)
-- Price action features (returns, volatility, momentum)
-- Volume analysis and market microstructure features
-
-### 3. Pattern Recognition (`src/patterns/`)
-- 27+ candlestick pattern detection
-- Support/resistance identification
-- Trend reversal signals
-
-### 4. Machine Learning Models (`src/models/`)
-- Hidden Markov Models for regime detection
-- Clustering algorithms for market behavior
-- Anomaly detection models
-
-### 5. Visualization (`src/visualization/`)
-- Interactive charts with Plotly
-- Pattern overlay on price charts
-- Cluster visualization with dimensionality reduction
-
-## 🔬 Analysis Examples
-
-### Market Regime Detection
-```python
-from src.models.hmm_model import MarketRegimeDetector
-
-detector = MarketRegimeDetector(data, n_regimes=4)
-regimes = detector.detect_regimes(features, method='gmm')
-```
-
-### Market Behavior Clustering
-```python
-from src.models.clustering import MarketBehaviorClusterer
-
-clusterer = MarketBehaviorClusterer(data, n_clusters=5)
-clusters = clusterer.kmeans_clustering(features)
-```
-
-### Pattern Detection
-```python
-from src.patterns.candlestick_patterns import CandlestickPatternDetector
-
-detector = CandlestickPatternDetector(data)
-patterns = detector.detect_all_patterns()
-```
-
-## 📈 Supported Cryptocurrencies
-
-- Bitcoin (BTC), Ethereum (ETH), Binance Coin (BNB)
-- Cardano (ADA), Solana (SOL), Polkadot (DOT)
-- Avalanche (AVAX), Polygon (MATIC), Chainlink (LINK), Uniswap (UNI)
-- And many more via yfinance
-
-## 🛠️ Development
-
-### Code Quality
-```bash
-make lint      # Run linting checks
-make format    # Format code with black
-make test      # Run tests with coverage
-make clean     # Clean cache and temporary files
-```
-
-### Adding New Features
-1. Add code to appropriate module in `src/`
-2. Update `__init__.py` files for imports
-3. Add tests in `tests/`
-4. Update documentation
-
-## 📝 Documentation
-
-- [Project Structure](PROJECT_STRUCTURE.md) - Detailed project organization
-- [R Documentation](README_R.md) - R-specific documentation
-- [Jupyter Notebook](notebooks/crypto_analysis_demo.ipynb) - Interactive analysis
-
-## 🔗 Dependencies
+## Dependencies
 
 ### Python
-- **Data**: yfinance, pandas, numpy
-- **ML**: scikit-learn, tslearn, umap-learn
-- **Visualization**: plotly, matplotlib, seaborn
-- **Analysis**: scipy, statsmodels
-- **Technical Analysis**: ta (Technical Analysis library)
+- `yfinance`, `pandas`, `numpy`, `scikit-learn`, `tslearn`, `umap-learn`, `plotly`, `matplotlib`, `seaborn`, `scipy`, `statsmodels`, `ta`
 
 ### R
-- **Data**: quantmod, TTR
-- **ML**: depmixS4, tsclust, cluster
-- **Visualization**: ggplot2, plotly
-- **Analysis**: PerformanceAnalytics, rugarch 
+- `quantmod`, `TTR`, `depmixS4`, `TSclust`, `cluster`, `ggplot2`, `plotly`, `PerformanceAnalytics`, `rugarch`
+
+## Data Management
+
+- All data is cached as CSV in `data/cache/`
+- No raw or sensitive data is tracked in git
+
+ 
 
