@@ -86,8 +86,8 @@ for (pkg in optional_packages) {
   success <- install_package_safe(pkg)
   if (!success) {
     cat(sprintf("⚠️  %s installation failed - this is optional\n", pkg))
+    }
   }
-}
 
 cat("\n🛠️  Installing development packages...\n")
 cat("-------------------------------------\n")
