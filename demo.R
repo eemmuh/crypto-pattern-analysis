@@ -24,10 +24,10 @@ cat("=====================================\n\n")
 get_crypto_data <- function(symbol = "BTC-USD", period = "6mo") {
   tryCatch({
     cat(sprintf("📊 Fetching %s data...\n", symbol))
-    
+  
     # Get data from Yahoo Finance
     data <- getSymbols(symbol, src = "yahoo", period = period, auto.assign = FALSE)
-    
+  
     # Convert to data frame
     df <- data.frame(
       Date = index(data),
@@ -223,8 +223,8 @@ detect_regimes <- function(df) {
     cat(sprintf("❌ Regime detection failed: %s\n", e$message))
     return(NULL)
   })
-}
-
+  }
+  
 # Function to calculate performance metrics
 calculate_performance <- function(df) {
   cat("📊 Calculating performance metrics...\n")
