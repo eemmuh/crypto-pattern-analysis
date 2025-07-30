@@ -67,14 +67,26 @@ class CryptoDataCollector:
             
         Returns:
             DataFrame with OHLCV data
-        """
-            # Get the full symbol for yfinance
-            full_symbol = self.crypto_symbols.get(symbol.upper(), f"{symbol.upper()}-USD")
             
-            # Check cache first
-            cache_file = self._get_cache_filename(full_symbol, period, interval, start_date, end_date)
-            if os.path.exists(cache_file):
-                logger.info(f"Loading cached data for {symbol}")
+        Raises:
+            ValueError: If symbol, period, or interval is invalid
+            ConnectionError: If unable to connect to data source
+            Exception: For other data retrieval errors
+        """
+        # Validate inputs
+        self._validate_symbol(symbol)
+        self._validate_period(period)
+        self._validate_interval(interval)
+        self._validate_dates(start_date, end_date)
+        self._validate_retries(max_retries)
+        
+        # Get the full symbol for yfinance
+        full_symbol = self.crypto_symbols.get(symbol.upper(), f"{symbol.upper()}-USD")
+        
+        # Check cache first
+        cache_file = self._get_cache_filename(full_symbol, period, interval, start_date, end_date)
+        if os.path.exists(cache_file):
+            logger.info(f"Loading cached data for {symbol}")
             try:
                 return pd.read_csv(cache_file, index_col=0, parse_dates=True)
             except Exception as e:
@@ -88,34 +100,34 @@ class CryptoDataCollector:
                 # Add delay between retries
                 if attempt > 0:
                     time.sleep(2 ** attempt)  # Exponential backoff
-            
-            # Fetch data from yfinance
-            ticker = yf.Ticker(full_symbol)
-            
-            if start_date and end_date:
-                data = ticker.history(start=start_date, end=end_date, interval=interval)
-            else:
-                data = ticker.history(period=period, interval=interval)
-            
-            if data.empty:
-                raise ValueError(f"No data found for {symbol}")
-            
-            # Clean and standardize column names
-            data.columns = [col.upper() for col in data.columns]
-            
-            # Add additional features
-            data = self._add_basic_features(data)
-            
-            # Cache the data
+                
+                # Fetch data from yfinance
+                ticker = yf.Ticker(full_symbol)
+                
+                if start_date and end_date:
+                    data = ticker.history(start=start_date, end=end_date, interval=interval)
+                else:
+                    data = ticker.history(period=period, interval=interval)
+                
+                if data.empty:
+                    raise ValueError(f"No data found for {symbol}")
+                
+                # Clean and standardize column names
+                data.columns = [col.upper() for col in data.columns]
+                
+                # Add additional features
+                data = self._add_basic_features(data)
+                
+                # Cache the data
                 try:
-            data.to_csv(cache_file)
-            logger.info(f"Downloaded and cached data for {symbol}: {len(data)} records")
+                    data.to_csv(cache_file)
+                    logger.info(f"Downloaded and cached data for {symbol}: {len(data)} records")
                 except Exception as e:
                     logger.warning(f"Failed to cache data: {e}")
-            
-            return data
-            
-        except Exception as e:
+                
+                return data
+                
+            except Exception as e:
                 logger.warning(f"Attempt {attempt + 1} failed for {symbol}: {str(e)}")
                 if attempt == max_retries - 1:
                     # Last attempt failed, try to provide sample data
@@ -124,6 +136,85 @@ class CryptoDataCollector:
         
         # This should never be reached, but just in case
         return self._get_sample_data(symbol, period)
+    
+    def _validate_symbol(self, symbol: str) -> None:
+        """
+        Validate cryptocurrency symbol.
+        
+        Args:
+            symbol: Symbol to validate
+            
+        Raises:
+            ValueError: If symbol is invalid
+        """
+        if not symbol or not isinstance(symbol, str):
+            raise ValueError("Symbol must be a non-empty string")
+        
+        if len(symbol) > 10:  # Reasonable max length for crypto symbols
+            raise ValueError("Symbol is too long")
+    
+    def _validate_period(self, period: str) -> None:
+        """
+        Validate data period.
+        
+        Args:
+            period: Period to validate
+            
+        Raises:
+            ValueError: If period is invalid
+        """
+        valid_periods = ['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']
+        if period not in valid_periods:
+            raise ValueError(f"Invalid period '{period}'. Must be one of: {valid_periods}")
+    
+    def _validate_interval(self, interval: str) -> None:
+        """
+        Validate data interval.
+        
+        Args:
+            interval: Interval to validate
+            
+        Raises:
+            ValueError: If interval is invalid
+        """
+        valid_intervals = ['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']
+        if interval not in valid_intervals:
+            raise ValueError(f"Invalid interval '{interval}'. Must be one of: {valid_intervals}")
+    
+    def _validate_dates(self, start_date: Optional[str], end_date: Optional[str]) -> None:
+        """
+        Validate date parameters.
+        
+        Args:
+            start_date: Start date string
+            end_date: End date string
+            
+        Raises:
+            ValueError: If dates are invalid
+        """
+        if start_date and end_date:
+            try:
+                from datetime import datetime
+                datetime.strptime(start_date, '%Y-%m-%d')
+                datetime.strptime(end_date, '%Y-%m-%d')
+            except ValueError:
+                raise ValueError("Dates must be in 'YYYY-MM-DD' format")
+            
+            if start_date >= end_date:
+                raise ValueError("Start date must be before end date")
+    
+    def _validate_retries(self, max_retries: int) -> None:
+        """
+        Validate retry parameter.
+        
+        Args:
+            max_retries: Number of retries
+            
+        Raises:
+            ValueError: If max_retries is invalid
+        """
+        if not isinstance(max_retries, int) or max_retries < 1 or max_retries > 10:
+            raise ValueError("max_retries must be an integer between 1 and 10")
     
     def _get_sample_data(self, symbol: str, period: str) -> pd.DataFrame:
         """
