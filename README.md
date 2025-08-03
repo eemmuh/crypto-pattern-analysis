@@ -8,6 +8,7 @@ A cross-language (Python & R) toolkit for unsupervised clustering, pattern recog
 - **Pattern Recognition**: 27+ candlestick patterns, trend reversals, momentum shifts
 - **Market Regime Detection**: Hidden Markov Models (HMM) and Gaussian Mixture Models (GMM) for identifying bull, bear, and sideways markets
 - **Unsupervised Clustering**: K-means, DBSCAN, and time series clustering for market behavior
+- **Backtesting Framework**: Comprehensive strategy testing with performance metrics, risk analysis, and visualization
 - **Robust Data Handling**: Automatic retry and fallback to sample data if API fails
 - **Interactive Visualization**: Plotly, ggplot2, and more
 - **Extensible & Modular**: Easy to add new features or models
@@ -64,6 +65,37 @@ crypto-project/
 
 ### R
 - `quantmod`, `TTR`, `depmixS4`, `TSclust`, `cluster`, `ggplot2`, `plotly`, `PerformanceAnalytics`, `rugarch`
+
+## Quick Start
+
+### Basic Analysis
+```bash
+# Run Python demo
+make demo
+
+# Run backtesting demo
+make backtest
+
+# Run R demo
+make demo-r
+```
+
+### Using the Backtesting Framework
+```python
+from src import CryptoDataCollector, TechnicalIndicators, Backtester
+
+# Get data and calculate indicators
+collector = CryptoDataCollector()
+data = collector.get_ohlcv_data('BTC', period='1y')
+ti = TechnicalIndicators(data)
+data_with_indicators = ti.add_all_indicators()
+
+# Run backtest
+backtester = Backtester(data_with_indicators, initial_capital=10000)
+results = backtester.run_combined_strategy()
+backtester.print_summary(results)
+backtester.plot_results(results).show()
+```
 
 ## Data Management
 

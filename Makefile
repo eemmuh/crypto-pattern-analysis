@@ -26,8 +26,9 @@ help:
 	@echo "  docs             Generate documentation"
 	@echo ""
 	@echo "Demo:"
-	@echo "  demo             Run the demo script"
-	@echo "  demo-r           Run the R demo script"
+@echo "  demo             Run the demo script"
+@echo "  backtest         Run the backtesting demo"
+@echo "  demo-r           Run the R demo script"
 	@echo ""
 
 # Installation
@@ -119,6 +120,10 @@ docs:
 demo:
 	@echo "Running Python demo..."
 	python demo.py
+
+backtest:
+	@echo "Running backtesting demo..."
+	python backtest_demo.py
 
 demo-r:
 	@echo "Running R demo..."
