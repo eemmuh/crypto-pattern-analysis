@@ -9,7 +9,17 @@ from datetime import datetime
 from typing import Optional, Dict, Any
 import json
 
-from config.settings import LOGGING_SETTINGS
+try:
+    from config.settings import LOGGING_SETTINGS
+except ImportError:
+    # Fallback settings if config is not available
+    LOGGING_SETTINGS = {
+        'level': 'INFO',
+        'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        'file': 'logs/crypto_analysis.log',
+        'max_bytes': 10485760,  # 10MB
+        'backup_count': 5
+    }
 
 
 class ColoredFormatter(logging.Formatter):
