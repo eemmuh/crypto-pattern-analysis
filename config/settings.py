@@ -2,15 +2,44 @@
 Configuration settings for the crypto trading analysis project.
 """
 
+import os
+from typing import Dict, Any, List
+from dataclasses import dataclass, field
+from pathlib import Path
+
+# Environment variable support
+def get_env_var(key: str, default: Any = None, type_cast=str):
+    """Get environment variable with type casting."""
+    value = os.getenv(key, default)
+    if value is not None and type_cast != str:
+        try:
+            return type_cast(value)
+        except (ValueError, TypeError):
+            return default
+    return value
+
+# Base paths
+PROJECT_ROOT = Path(__file__).parent.parent
+DATA_DIR = PROJECT_ROOT / "data"
+LOGS_DIR = PROJECT_ROOT / "logs"
+CACHE_DIR = DATA_DIR / "cache"
+
+# Ensure directories exist
+DATA_DIR.mkdir(exist_ok=True)
+LOGS_DIR.mkdir(exist_ok=True)
+CACHE_DIR.mkdir(exist_ok=True)
+
 # Data Collection Settings
 DATA_SETTINGS = {
-    'cache_dir': 'data/cache',
-    'default_period': '1y',
-    'default_interval': '1d',
+    'cache_dir': str(CACHE_DIR),
+    'default_period': get_env_var('DEFAULT_PERIOD', '1y'),
+    'default_interval': get_env_var('DEFAULT_INTERVAL', '1d'),
     'supported_symbols': [
         'BTC', 'ETH', 'BNB', 'ADA', 'SOL', 'DOT', 'AVAX', 
         'MATIC', 'LINK', 'UNI', 'XRP', 'LTC', 'BCH', 'XLM'
-    ]
+    ],
+    'max_data_points': get_env_var('MAX_DATA_POINTS', 10000, int),
+    'data_quality_threshold': get_env_var('DATA_QUALITY_THRESHOLD', 0.9, float)
 }
 
 # Technical Indicators Settings
