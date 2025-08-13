@@ -32,6 +32,7 @@ Thumbs.db
 
 # Data files
 data/cache/
+data/database/
 *.csv
 *.json
 *.pkl
@@ -41,9 +42,27 @@ data/cache/
 logs/
 *.log
 
-# Model files
+# Model files and registry
+models/registry/
 *.model
 *.joblib
+*.h5
+*.pth
+*.onnx
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# API and web
+.env.local
+.env.production
+.env.development
+
+# Docker
+.dockerignore
+docker-compose.override.yml
 
 # Temporary files
 tmp/
@@ -61,11 +80,10 @@ coverage.xml
 .mypy_cache/
 .dmypy.json
 
+# R files
 demo.R
 test_run.R
 install_dependencies.R
-
-# R
 .Rhistory
 .RData
 .Ruserdata
@@ -74,6 +92,83 @@ install_dependencies.R
 
 # pip
 pip-log.txt
-pip-delete-this-directory.txt 
+pip-delete-this-directory.txt
+
+# Node.js (if using frontend)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Reports and exports
+reports/
+exports/
+*.pdf
+*.xlsx
+*.xls
+
+# Cache directories
+.cache/
+.pytest_cache/
+.mypy_cache/
+
+# IDE specific
+.vscode/settings.json
+.vscode/launch.json
+.idea/workspace.xml
+.idea/tasks.xml
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Environment variables
+.env*
+!.env.example
+
+# Local configuration
+config/local.py
+config/local_settings.py
+
+# API keys and secrets
+secrets/
+keys/
+*.key
+*.pem
+
+# Large data files
+*.hdf5
+*.h5
+*.parquet
+*.feather
+
+# Model artifacts
+artifacts/
+checkpoints/
+runs/
+
+# Monitoring and metrics
+.mlflow/
+wandb/
+tensorboard_logs/
+
+# Documentation builds
+docs/_build/
+site/
+
+# Package lock files (if using package managers)
+package-lock.json
+yarn.lock
+poetry.lock 
 
 
