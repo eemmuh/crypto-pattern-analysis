@@ -27,7 +27,7 @@ def run_api():
     try:
         logger.info("Starting FastAPI application...")
         subprocess.run([
-            sys.executable, "-m", "uvicorn", 
+            "uv", "run", "uvicorn", 
             "src.api.app:app", 
             "--host", "0.0.0.0", 
             "--port", "8000", 
@@ -139,7 +139,7 @@ def run_tests():
     """Run project tests."""
     try:
         logger.info("Running tests...")
-        subprocess.run([sys.executable, "-m", "pytest", "tests/", "-v"])
+        subprocess.run(["uv", "run", "pytest", "tests/", "-v"])
     except Exception as e:
         logger.error(f"Tests failed: {e}")
         sys.exit(1)
