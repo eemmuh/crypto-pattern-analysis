@@ -34,7 +34,7 @@ services:
     environment:
       - PYTHONPATH=/app
       - JUPYTER_ENABLE_LAB=yes
-    command: jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token=''
+    command: uv run jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token=''
     restart: unless-stopped
 
   crypto-collector:
@@ -45,7 +45,7 @@ services:
     environment:
       - PYTHONPATH=/app
       - LOG_LEVEL=INFO
-    command: python manage.py collect
+    command: uv run python manage.py collect
     restart: "no"
     depends_on:
       - crypto-api
