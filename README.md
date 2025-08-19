@@ -1,4 +1,4 @@
-# Crypto Trading Analysis Project
+# Crypto Pattern Analysis
 
 A comprehensive cryptocurrency trading analysis platform with advanced data collection, machine learning models, and REST API.
 
@@ -37,7 +37,7 @@ A comprehensive cryptocurrency trading analysis platform with advanced data coll
 
 3. **Install dependencies**
    ```bash
-   pip install -r requirements.txt
+   uv sync
    ```
 
 4. **Setup project**
@@ -63,24 +63,28 @@ A comprehensive cryptocurrency trading analysis platform with advanced data coll
 
 ```bash
 # Start the API server
-python manage.py api
+uv run python manage.py api
 
 # Collect data for all supported cryptocurrencies
-python manage.py collect
+uv run python manage.py collect
 
 # Show project statistics
-python manage.py stats
+uv run python manage.py stats
 
 # Clean cache files
-python manage.py clean
+uv run python manage.py clean
 
 # Run tests
-python manage.py test
+uv run python manage.py test
 ```
 
 ### Using Python Directly
 
-```python
+```bash
+# Run Python with uv
+uv run python
+
+# Then in Python:
 from src.data.data_collector import CryptoDataCollector
 from src.data.database import get_database
 from src.models.model_registry import get_model_registry
@@ -240,14 +244,14 @@ The model registry provides:
 
 ```bash
 # Run all tests
-python manage.py test
+uv run python manage.py test
 
 # Run specific test categories
-pytest tests/unit/ -v
-pytest tests/integration/ -v
+uv run pytest tests/unit/ -v
+uv run pytest tests/integration/ -v
 
 # Run with coverage
-pytest --cov=src tests/
+uv run pytest --cov=src tests/
 ```
 
 ## 📊 Monitoring and Logging

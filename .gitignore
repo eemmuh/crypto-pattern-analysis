@@ -15,6 +15,10 @@ env/
 venv/
 ENV/
 
+# UV (Python package manager)
+.uv/
+# Note: uv.lock should be committed for reproducible builds
+
 # Build and distribution
 build/
 dist/
@@ -169,6 +173,169 @@ site/
 # Package lock files (if using package managers)
 package-lock.json
 yarn.lock
-poetry.lock 
+poetry.lock
+
+# Streamlit (if adding web dashboard)
+.streamlit/
+
+# Jupyter Lab
+.jupyter/
+
+# IPython
+.ipython/
+
+# Spyder
+.spyderproject
+.spyproject
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# macOS
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.tmp
+*.temp
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# Cryptocurrency specific
+# Trading data
+trading_data/
+historical_data/
+live_data/
+
+# API rate limiting
+rate_limit_cache/
+
+# Trading signals
+signals/
+alerts/
+
+# Backtesting results
+backtest_results/
+strategy_results/
+
+# Portfolio data
+portfolio/
+positions/
+
+# Market data
+market_data/
+price_data/
+
+# Technical analysis cache
+ta_cache/
+indicator_cache/
+
+# Model training artifacts
+model_artifacts/
+training_logs/
+model_checkpoints/
+
+# Data validation
+validation_reports/
+data_quality_reports/
+
+# Performance metrics
+performance_metrics/
+benchmark_results/
+
+# User data (if adding user features)
+user_data/
+user_profiles/
+user_settings/
+
+# API documentation cache
+api_docs_cache/
+
+# Web dashboard assets (if adding frontend)
+static/
+assets/
+public/
+
+# SSL certificates
+*.crt
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Database backups
+*.sql
+*.dump
+*.backup
+
+# Log rotation
+*.log.*
+*.log.gz
+*.log.bz2
+
+# Temporary uploads
+uploads/
+temp_uploads/
+
+# Cache for external APIs
+api_cache/
+external_cache/
+
+# Development tools
+.pre-commit-config.yaml
+.pre-commit-hooks.yaml 
 
 
