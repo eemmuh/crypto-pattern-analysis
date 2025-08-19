@@ -11,8 +11,6 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
 from sklearn.metrics import silhouette_score, calinski_harabasz_score
-import umap
-from tslearn.clustering import TimeSeriesKMeans, silhouette_score as ts_silhouette_score
 import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.express as px
@@ -21,6 +19,20 @@ from plotly.subplots import make_subplots
 import logging
 
 logger = logging.getLogger(__name__)
+
+try:
+    import umap
+    UMAP_AVAILABLE = True
+except ImportError:
+    UMAP_AVAILABLE = False
+    logger.warning("UMAP not available. Some clustering methods will be disabled.")
+
+try:
+    from tslearn.clustering import TimeSeriesKMeans, silhouette_score as ts_silhouette_score
+    TSLEARN_AVAILABLE = True
+except ImportError:
+    TSLEARN_AVAILABLE = False
+    logger.warning("tslearn not available. Time series clustering will be disabled.")
 
 
 class MarketBehaviorClusterer:
@@ -226,6 +238,10 @@ class MarketBehaviorClusterer:
             return {}
         
         # Perform time series clustering
+        if not TSLEARN_AVAILABLE:
+            logger.warning("tslearn not available, skipping time series clustering")
+            return {}
+            
         ts_kmeans = TimeSeriesKMeans(n_clusters=n_clusters, random_state=42)
         labels = ts_kmeans.fit_predict(segments)
         
@@ -431,9 +447,16 @@ class MarketBehaviorClusterer:
             coords = reducer.fit_transform(data_for_viz)
             title = f"{cluster_type.upper()} Clusters - t-SNE"
         elif method == 'umap':
-            reducer = umap.UMAP(n_components=2, random_state=42)
-            coords = reducer.fit_transform(data_for_viz)
-            title = f"{cluster_type.upper()} Clusters - UMAP"
+            if not UMAP_AVAILABLE:
+                logger.warning("UMAP not available, falling back to PCA")
+                method = 'pca'
+                reducer = PCA(n_components=2, random_state=42)
+                coords = reducer.fit_transform(data_for_viz)
+                title = f"{cluster_type.upper()} Clusters - PCA (UMAP fallback)"
+            else:
+                reducer = umap.UMAP(n_components=2, random_state=42)
+                coords = reducer.fit_transform(data_for_viz)
+                title = f"{cluster_type.upper()} Clusters - UMAP"
         else:
             logger.error(f"Unknown visualization method: {method}")
             return go.Figure()
