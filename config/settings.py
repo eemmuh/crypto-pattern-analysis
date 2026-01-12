@@ -131,7 +131,7 @@ API_SETTINGS = {
     'max_retries': 3,
     'retry_delay': 1,
     'rate_limit': 100,  # requests per minute
-    'user_agent': 'CryptoAnalysis/1.0'
+    'user_agent': 'CryptoPatternAnalysis/1.0 (github.com/eemmuh/crypto-pattern-analysis)'
 }
 
 # Feature Engineering Settings
